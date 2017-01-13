@@ -102,6 +102,29 @@ function handleAnswer(event, isCorrect) {
 
   const otherCard = card.parentNode.querySelector(`.half:not(.${className})`);
   otherCard.style.display = 'none';
+
+	let idxQuestion = questions[qndx-1];
+  storeAnswer(idxQuestion.id, isCorrect);
+}
+
+function handleAnswerSubTitle(questionId) {
+  WeDeploy
+    .data(`data.${DOMAIN}`)
+    .where('questionId', questionId)
+    .aggregate('dist', 'correct', 'terms')
+    .count()
+    .get('answers')
+    .then((result) => {
+      let validationSubTitle = validation.querySelector('p');
+      let aggregations = result.aggregations.dist;
+
+      let correctCount = aggregations['1'] || 0;
+      let wrongCount = aggregations['0'] || 0;
+
+      validationSubTitle.innerHTML = `This question was answered`;
+      validationSubTitle.innerHTML += ` ${correctCount} time${correctCount > 1 ? 's' : ''} correctly`;
+      validationSubTitle.innerHTML += ` and ${wrongCount} time${wrongCount > 1 ? 's' : ''} wrong.`;
+    });
 }
 
 function getQuestions() {
@@ -114,6 +137,19 @@ function getQuestions() {
     .then((clientResponse) => {
       questions = clientResponse.body();
     });
+}
+
+function storeAnswer(questionId, isCorrect) {
+  return WeDeploy
+    .data(`data.${DOMAIN}`)
+    .create('answers', {
+      questionId: questionId,
+      correct: isCorrect,
+      timestamp: new Date()
+		})
+   	.then((response) => {
+  		handleAnswerSubTitle(questionId, isCorrect);
+		});
 }
 
 
