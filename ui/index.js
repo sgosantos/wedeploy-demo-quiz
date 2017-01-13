@@ -64,12 +64,17 @@ function renderAnswer(component, question, answer) {
 }
 
 function checkAnswer(event, questionId, answerId) {
-  if (answerId === 1) {
-    success(event);
-  }
-  else {
-    error(event);
-  }
+  return WeDeploy
+    .url(`generator.${DOMAIN}`)
+    .path('check')
+    .param('questionId', questionId)
+    .param('answerId', answerId)
+    .get()
+    .then((response) => {
+      response.body()
+        ? success(event)
+        : error(event);
+    });
 }
 
 function success(event) {
@@ -100,26 +105,15 @@ function handleAnswer(event, isCorrect) {
 }
 
 function getQuestions() {
-  questions = [
-      {
-        id: 1,
-        text: "What does the fox say?",
-        answers: [
-          {
-            id: 1,
-            text: "Yay Yay!",
-            description: "The fox is a happy wolf that says cheerful things"        
-          },
-          {
-            id: 2,
-            text: "WhooHo",
-            description: "The fox is a lonely wolf that says wolfy things"
-          }
-        ]
-      }
-    ];
-
-  return Promise.resolve(questions);
+  return WeDeploy
+    .url(`generator.${DOMAIN}`)
+    .path('questions')
+    .param('random', 'true')
+    .param('limit', 3)
+    .get()
+    .then((clientResponse) => {
+      questions = clientResponse.body();
+    });
 }
 
 
