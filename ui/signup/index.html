@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>devQA :: Sign In</title>
+  <title>devQA :: Sign Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
@@ -18,12 +18,11 @@
 
 	<header class="grid-login">
 		<div class="content-header">
-			<h1>Login into your account</h1>
+			<h1>Create your account</h1>
 		</div>
 	</header>
 
 	<main class="grid-login">
-
 		<section>
 			<div class="content-body">
 
@@ -33,7 +32,12 @@
 
         <div id="alert" class="alert alert-danger"></div>
 
-				<form name="signIn" class="form" onsubmit="signInWithEmailAndPassword(); return false;">
+				<form name="signUp" class="form" onsubmit="submitForm(); return false;">
+
+					<div class="form-group">
+						<label>Name</label>
+						<input type="text" placeholder="Your full name" class="form-control" name="name" value="" maxlength="100" autofocus="" required="">
+					</div>
 
 					<div class="form-group">
 						<label>Email</label>
@@ -41,40 +45,17 @@
 					</div>
 
 					<div class="form-group">
-						<div class="col-flex-row-spacebetween-center">
-							<label>Password</label>
-						</div>
+						<label>Password</label>
 						<input type="password" placeholder="Password (at least 6 characters)" class="form-control" name="password" value="" maxlength="100" required="" />
 					</div>
 
 					<div class="btn-wrapper">
-						<button type="submit" class="btn btn-success" name="submit">Login</button>
+						<button type="submit" class="btn btn-success" name="submit">Create an Account</button>
 					</div>
 
 				</form>
 
-				<p class="info-small">Don't you have an account? <a href="../signup/">Sign up</a></p>
-
-			</div>
-		</section>
-
-		<section>
-			<div class="content-body">
-				<p class="info-small social">Use your Github or Google account for a faster login</p>
-				<div class="col-flex-row-spacebetween-center">
-					<button class="btn btn-social btn-github" type="button" onclick="signInWithGithub();">
-						<div class="btn-content">
-							<span class="icon-16-github"></span>
-							<span class="btn-label">Login with Github</span>
-						</div>
-					</button>
-					<button class="btn btn-social btn-google" type="button" onclick="signInWithGoogle();">
-						<div class="btn-content">
-							<span class="icon-google"></span>
-							<span class="btn-label">Login with Google</span>
-						</div>
-					</button>
-				</div>
+				<p class="info-small">Already have an account? <a href="../login/">Login</a></p>
 			</div>
 		</section>
 
