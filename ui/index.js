@@ -8,14 +8,25 @@ const ELEMS = {
   footer: document.querySelector('footer'),
 
   validation: document.getElementById('validation'),
-  nextButton: document.querySelector('#next')
+	nextButton: document.querySelector('#next'),
+
+	userPhoto: document.getElementById('userPhoto'),
+	userName: document.getElementById('userName'),
+	userInitials: document.getElementById('userInitials')
 };
 
+const auth = WeDeploy.auth(`auth.${DOMAIN}`);
 let questions = [];
 let qndx = 0;
 
 
 function main() {
+	if (!auth.currentUser) {
+  	window.location = "/login";
+	}
+
+	renderUserHeader(auth.currentUser);
+
   getQuestions()
     .then(showNextQuestion);
 }
@@ -152,5 +163,23 @@ function storeAnswer(questionId, isCorrect) {
 		});
 }
 
+function signOut() {
+  auth
+    .signOut()
+    .then(() => {
+      location.href = '/login';
+    });
+}
+
+function renderUserHeader(user) {
+  if (user.photoUrl) {
+    ELEMS.userPhoto.src = user.photoUrl;
+  }
+
+  ELEMS.userName.innerHTML = user.name || user.email;
+  ELEMS.userInitials.innerHTML = user.name
+    ? user.name.charAt(0)
+    : user.email.charAt(0);
+}
 
 main();
